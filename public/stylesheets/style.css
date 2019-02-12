@@ -1,8 +1,13 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+body
+{
+  background-color: #DEE5ED;
+  color: #2F404D;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
-a {
-  color: #00B7FF;
+.unbake__dropzone
+{
+  border: 2px dashed #2F404D; 
+  background-color: white;
+  text-align: center;
 }

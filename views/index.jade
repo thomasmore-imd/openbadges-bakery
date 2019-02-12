@@ -2,4 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  .bakery
+    .bake
+      h2 Bake a badge
+      p.hint Paste Badge Assertion JSON to bake an image
+      textarea(id="inputBake" name="inputBake", cols="30", rows="10")
+      button(id="btnBake") Bake badge
+      .bake__result
+    .unbake
+      h2 Unbake or verify a badge image
+      p.hint Drag and drop an open badge image to verify its contents 
+      .unbake__dropzone
+        p Drop a badge image to verify
+      .unbake__result
