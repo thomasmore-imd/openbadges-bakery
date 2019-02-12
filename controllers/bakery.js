@@ -50,19 +50,20 @@ router.bake = async function (req, res, next) {
             url: badgeImage,
             responseType: 'stream'
         })
-        .then(function (response) {
+        .then(async function (response) {
             // bake the data into the image
 
             // first, we generate a unique filename that starts with prefix "my-badge"
             let filename = uniqueFilename("", 'my-badge') + ".png";
             console.log(filename);
             let fullpath = path.resolve('./public/tempbadges');
-            response.data.pipe(pngitxt.set({
+            await response.data.pipe(pngitxt.set({
                     keyword: 'openbadges',
                     value: JSON.stringify(badgeAssertion)
                 }, true))
                 // write the output badge
                 .pipe(fs.createWriteStream(fullpath + "/" + filename));
+
             res.status(200).json({
                 status: 'success',
                 downloadUrl: filename
