@@ -4,6 +4,8 @@ const https = require('https');
 const fs = require("fs");
 const isURL = require('is-url');
 const axios = require('axios');
+const path = require('path');
+const uniqueFilename = require('unique-filename');
 
 router.unbake = function (req, res, next) {
     fs.createReadStream('output.png')
@@ -51,13 +53,20 @@ router.bake = async function (req, res, next) {
         .then(function (response) {
             // bake the data into the image
 
+            // first, we generate a unique filename that starts with prefix "my-badge"
+            let filename = uniqueFilename("", 'my-badge') + ".png";
+            console.log(filename);
+            let fullpath = path.resolve('./public/tempbadges');
             response.data.pipe(pngitxt.set({
                     keyword: 'openbadges',
                     value: JSON.stringify(badgeAssertion)
                 }, true))
                 // write the output badge
-                .pipe(fs.createWriteStream('output.png'));
-            res.send("done")
+                .pipe(fs.createWriteStream(fullpath + "/" + filename));
+            res.status(200).json({
+                status: 'success',
+                downloadUrl: filename
+            });
         });
 }
 
