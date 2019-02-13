@@ -1,11 +1,10 @@
 const router = require('express').Router();
 const pngitxt = require('png-itxt');
-const https = require('https');
 const fs = require("fs");
 const isURL = require('is-url');
 const axios = require('axios');
-const path = require('path');
-const uniqueFilename = require('unique-filename');
+const bakepng = require('../libs/bakepng');
+const bakesvg = require('../libs/bakesvg');
 
 router.unbake = function (req, res, next) {
     fs.createReadStream('output.png')
@@ -37,38 +36,26 @@ router.bake = async function (req, res, next) {
         await axios.get(badge).then(result => {
             badgeImage = result.data.image;
         }).catch(err => {
-            console.log(err);
+            throw new Error(err);
         });
 
     } else {
         badgeImage = badge.image;
     }
 
-    // grab the image
-    axios({
-            method: 'get',
-            url: badgeImage,
-            responseType: 'stream'
-        })
-        .then(async function (response) {
-            // bake the data into the image
+    let extension = badgeImage.substring(badgeImage.length - 3, badgeImage.length);
+    if (extension === "png") {
+        var filename = await bakepng.bake(badgeImage, badgeAssertion);
+    } else if (extension === "svg") {
+        var filename = await bakesvg.bake(badgeImage, badgeAssertion);
+    } else {
+        throw new Error("Only .png or .svg files can be baked.");
+    }
 
-            // first, we generate a unique filename that starts with prefix "my-badge"
-            let filename = uniqueFilename("", 'my-badge') + ".png";
-            console.log(filename);
-            let fullpath = path.resolve('./public/tempbadges');
-            await response.data.pipe(pngitxt.set({
-                    keyword: 'openbadges',
-                    value: JSON.stringify(badgeAssertion)
-                }, true))
-                // write the output badge
-                .pipe(fs.createWriteStream(fullpath + "/" + filename));
-
-            res.status(200).json({
-                status: 'success',
-                downloadUrl: filename
-            });
-        });
+    res.status(200).json({
+        status: 'success',
+        downloadUrl: filename
+    });
 }
 
 module.exports = router;
