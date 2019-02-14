@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
+var multer = require('multer');
+var upload = multer({
+    dest: 'uploads/'
+})
+
 const indexController = require('../controllers/index');
 const bakeryController = require('../controllers/bakery');
 
-/* GET home page. */
+// public pages
 router.get('/', indexController.index);
-router.get('/unbake', bakeryController.unbake);
-router.post('/bake', bakeryController.bake);
+
+// api routes
+router.post('/api/unbake', upload.single('badge'), bakeryController.unbake);
+router.post('/api/bake', bakeryController.bake);
 
 module.exports = router;

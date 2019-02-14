@@ -9,7 +9,6 @@ async function bake(badgeImage, badgeAssertion) {
     // we generate a unique filename that starts with prefix "my-badge"
     let filename = uniqueFilename("", 'my-badge') + ".svg";
     let fullpath = path.resolve('./public/tempbadges');
-    console.log("Baking SVG 🎨");
     // grab the image
     return axios({
             method: 'get',

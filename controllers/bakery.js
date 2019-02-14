@@ -7,14 +7,32 @@ const bakepng = require('../libs/bakepng');
 const bakesvg = require('../libs/bakesvg');
 
 router.unbake = function (req, res, next) {
-    fs.createReadStream('output.png')
-        .pipe(
-            pngitxt.getitxt('openbadges', function (err, data) {
-                if (!err && data) {
-                    console.log(data.openbadges, ":", data.value);
-                    res.json(data.value);
-                }
-            }))
+    let openbadge;
+
+
+
+    var stream = fs.createReadStream(req.file.path).pipe(
+        pngitxt.getitxt('openbadges', function (err, data) {
+            if (!err && data) {
+                console.log(data.value);
+                openbadge = data.value
+            }
+        }));
+
+    stream.on('end', function () {
+        if (openbadge) {
+            res.json({
+                status: 'success',
+                assertion: openbadge
+            });
+        } else {
+            res.status(500).send('The uploaded image is not a valid open badge.');
+        }
+    });
+
+    // console.log(req.file);
+    let isSvg = req.file.mimetype.includes('svg');
+    let isPng = req.file.mimetype.includes('png');
 }
 
 router.bake = async function (req, res, next) {

@@ -12,6 +12,11 @@ body
   text-align: center;
 }
 
+.dragging
+{
+  background-color: #e3daf6;
+}
+
 .bake__result img
 {
   max-width: 100%;
