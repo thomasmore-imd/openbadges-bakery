@@ -2,19 +2,24 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet', href='/stylesheets/normalize.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet", href="/fonts/unb_pro.css")
   body
     block content
     script(src="https://unpkg.com/axios/dist/axios.min.js")
     script(src="javascript/app.js")
     footer
+      p
+        img(src="images/moz-logo-bw-rgb.svg", alt="Mozilla")
       p This tool was initially created by @GoodBytes to serve students studying 
        a(href="https://www.weareimd.be") Interactive Multimedia Design
        |  at 
        a(href="https://www.thomasmore.be/en/node/1046") Thomas More University College
-       |  Feel free to use it for your own open badging.
+       |  Feel free to use it for your own open badges needs.
       p The code is available on 
        a(href="https://github.com/thomasmore-imd/openbadges-bakery") github
        |  as 
        a(href="https://en.wikipedia.org/wiki/Postcardware") Postcardware
-      p Feel free to send us a postcard to <address>GoodBytes / Interactive Multimedia Design - Zandpoortvest 60, 2800 Mechelen - Belgium</address>
+      div Please send us a postcard to <address>GoodBytes / Interactive Multimedia Design - Zandpoortvest 60, 2800 Mechelen - Belgium</address>
+      | if you use this service. We'll show off your card like a new pair of shoes on prom night.

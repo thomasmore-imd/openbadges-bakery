@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'unb_problack';
+    src: url('unb_pro_black-webfont.eot');
+    src: url('unb_pro_black-webfont.eot?#iefix') format('embedded-opentype'),
+         url('unb_pro_black-webfont.woff2') format('woff2'),
+         url('unb_pro_black-webfont.woff') format('woff'),
+         url('unb_pro_black-webfont.ttf') format('truetype'),
+         url('unb_pro_black-webfont.svg#unb_problack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'unb_proregular';
+    src: url('unb_pro_regular-webfont.eot');
+    src: url('unb_pro_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('unb_pro_regular-webfont.woff2') format('woff2'),
+         url('unb_pro_regular-webfont.woff') format('woff'),
+         url('unb_pro_regular-webfont.ttf') format('truetype'),
+         url('unb_pro_regular-webfont.svg#unb_proregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

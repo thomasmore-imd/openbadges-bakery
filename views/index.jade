@@ -1,17 +1,20 @@
 extends layout
 
 block content
-  h1 Openbadges 2.0 Bakery & Validator
-  .bakery
+  header
+    h1.title Openbadges 2.0 Validator
+    h2.subtitle we also have an API
+  section.bakery
     .bake
-      h2 Bake a badge
+      h3 Bake a badge
       p.hint Paste Badge Assertion JSON to bake an image
-      textarea(id="inputAssertion" name="inputAssertion", cols="30", rows="10")
-      button(id="btnBake") Bake badge
+      textarea(id="inputAssertion" class="inputAssertion" name="inputAssertion", cols="30", rows="10")
+      button(id="btnBake" class="btn btn--primary") Bake badge
       .bake__result
     .unbake
-      h2 Unbake or verify a badge image
+      h3 Validate a badge
       p.hint Drag and drop an open badge image to verify its contents 
-      .unbake__dropzone
-        p Drop a badge image to verify
+      .unbake__dropzone.dropzone
+        p Drop a badge image here to validate
       .unbake__result
+  
