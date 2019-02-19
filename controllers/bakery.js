@@ -5,11 +5,11 @@ const isURL = require('is-url');
 const axios = require('axios');
 const bakepng = require('../libs/bakepng');
 const bakesvg = require('../libs/bakesvg');
+const modelAssertion = require('../models/assertion');
 
 router.unbake = function (req, res, next) {
+
     let openbadge;
-
-
 
     var stream = fs.createReadStream(req.file.path).pipe(
         pngitxt.getitxt('openbadges', function (err, data) {
@@ -38,6 +38,21 @@ router.unbake = function (req, res, next) {
 router.bake = async function (req, res, next) {
     // get badge JSON
     let badgeAssertion = req.body.badge;
+
+    try {
+        modelAssertion.validate(badgeAssertion);
+        console.log("🚀");
+    } catch (err) {
+        console.log(err);
+
+        let friendlyErrorMessage = err.property + " " + err.message;
+
+        res.status(500).send({
+            error: friendlyErrorMessage
+        })
+
+        return false;
+    }
 
     // parse badge assertion and grab the badge property/url
     let badge = req.body.badge.badge;
