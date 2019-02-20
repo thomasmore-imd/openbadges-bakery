@@ -72,7 +72,8 @@ function validate(assertion) {
 
     v.addSchema(recipientSchema, '/recipient');
     let result = v.validate(assertion, schema, options);
-    //console.log(result);
+    console.log(result);
+    return result;
 }
 
 module.exports.validate = validate;

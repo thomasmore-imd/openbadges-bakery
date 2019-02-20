@@ -28,4 +28,4 @@ benchmarks/graphs
 
 # Temporary files
 /uploads
-/tempbadges
+/public/tempbadges
