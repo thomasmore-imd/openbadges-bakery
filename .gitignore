@@ -25,3 +25,7 @@ coverage
 
 # Benchmarking
 benchmarks/graphs
+
+# Temporary files
+/uploads
+/tempbadges
