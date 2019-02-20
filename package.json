@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "node_modules/.bin/ava tests/**/*.test.js --verbose"
   },
   "engines": {
     "node": "11.x"
@@ -22,5 +23,8 @@
     "multer": "^1.4.1",
     "png-itxt": "^2.0.0",
     "unique-filename": "^1.1.1"
+  },
+  "devDependencies": {
+    "ava": "^1.2.1"
   }
 }

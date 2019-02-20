@@ -76,3 +76,4 @@ function validate(assertion) {
 }
 
 module.exports.validate = validate;
+module.exports.extractVersion = extractVersion;
