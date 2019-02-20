@@ -13,7 +13,6 @@ router.unbake = function (req, res, next) {
   var stream = fs.createReadStream(req.file.path).pipe(
     pngitxt.getitxt("openbadges", function (err, data) {
       if (!err && data) {
-        console.log(data.value);
         openbadge = data.value;
       }
     })
