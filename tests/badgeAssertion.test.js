@@ -7,7 +7,6 @@ const model_assertion = require('../models/assertion');
 let validBadge = `{
     "@context": "https://w3id.org/openbadges/v2",
     "type": "Assertion",
-    "uid": "https://weareimd.be/openbadges/assertions/u0077344_mongodb.json",
     "id": "https://weareimd.be/openbadges/assertions/u0077344_mongodb.json",
     "recipient": {
         "type": "email",
@@ -16,10 +15,10 @@ let validBadge = `{
         "identity": "sha256$c7ef86405ba71b85acd8e2e95166c4b111448089f2e1599f42fe1bba46e865c5"
     },
     "issuedOn": "2019-02-01T23:59:59Z",
+    "expires": "2020-02-30T23:59:59Z",
     "badge": "https://weareimd.be/openbadges/badges/mongodb.json",
     "verify": {
-        "type": "hosted",
-        "url": "https://weareimd.be/openbadges/assertions/u0077344_mongodb.json"
+        "type": "hosted"
     }
 }`;
 validBadge = JSON.parse(validBadge);
@@ -34,4 +33,14 @@ test('version extraction is being tested', t => {
 test('validation of badge assertions is being tested', t => {
     let result = model_assertion.validate(validBadge);
     t.is(result.errors.length, 0);
+});
+
+test('validation type `hosted` is being tested', t => {
+    let result = model_assertion.isHosted(validBadge);
+    t.is(result, true);
+});
+
+test('validation type `signed` is being tested', t => {
+    let result = model_assertion.isSigned(validBadge);
+    t.is(result, true);
 });

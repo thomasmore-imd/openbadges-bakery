@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "node_modules/.bin/ava tests/**/*.test.js --verbose"
+    "test": "node_modules/.bin/ava tests/**/*.test.js --verbose",
+    "test:watch": "node_modules/.bin/ava --watch tests/**/*.test.js --verbose"
   },
   "engines": {
     "node": "11.x"

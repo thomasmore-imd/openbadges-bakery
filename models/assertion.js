@@ -12,6 +12,18 @@ function extractVersion(assertion) {
     return version;
 }
 
+function isHosted(assertion) {
+    // extract the verification type and see if this is a hosted badge assertion
+    let verificationType = assertion.verify.type || assertion.verification.type;
+    return assertion.verify.type === 'hosted' || 'HostedBadge' ? true : false;
+}
+
+function isSigned(assertion) {
+    // extract the verification type and see if this is a signed badge assertion
+    let verificationType = assertion.verify.type || assertion.verification.type;
+    return assertion.verify.type === 'signed' || 'SignedBadge' ? true : false;
+}
+
 function validate(assertion) {
     let version = extractVersion(assertion);
 
@@ -32,6 +44,15 @@ function validate(assertion) {
             }
         },
         "required": ["identity", "type", "hashed"]
+    };
+
+    var verifySchema = {
+        "type": "object",
+        "properties": {
+            "type": {
+                "type": "string"
+            }
+        }
     };
 
     var schema = {
@@ -60,7 +81,12 @@ function validate(assertion) {
             },
             {
                 // the verify alias is also valid to use
-                "required": ['verify']
+                "required": ['verify'],
+                "properties": {
+                    "verify": {
+                        "$ref": "/verify"
+                    }
+                }
             }
         ]
     };
@@ -71,9 +97,12 @@ function validate(assertion) {
     }
 
     v.addSchema(recipientSchema, '/recipient');
+    v.addSchema(verifySchema, '/verify');
     let result = v.validate(assertion, schema, options);
     return result;
 }
 
 module.exports.validate = validate;
 module.exports.extractVersion = extractVersion;
+module.exports.isHosted = isHosted;
+module.exports.isSigned = isSigned;
