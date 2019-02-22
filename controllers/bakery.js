@@ -42,7 +42,9 @@ router.unbake = function (req, res, next) {
       });
 
     } else {
-      res.status(500).send("The uploaded image is not a valid open badge.");
+      res.status(500).send({
+        'error': "The uploaded image is not a valid open badge."
+      });
     }
   });
 
