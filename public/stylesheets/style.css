@@ -54,13 +54,6 @@ h3
   grid-template-columns: 50% 50%;
 }
 
-@media(max-width: 650px){
-  .bakery
-  {
-    grid-template-columns: 100vw;
-  }
-}
-
 .bakery > div
 {
   padding: 2em 2em 4em 2em;
@@ -134,7 +127,7 @@ footer
   text-align: center;
   font-size: 0.667em;
   line-height: 1.5em;
-  padding: 2em;
+  padding: 4em 2em;
 
 }
 
@@ -159,4 +152,21 @@ address
 {
   border-style: solid;
   color: #009E78;
+}
+
+.logo
+{
+  max-height: 50px;
+}
+
+@media(max-width: 650px){
+  .bakery
+  {
+    grid-template-columns: 100%;
+  }
+
+  header
+  {
+    font-size: 80%;
+  }
 }
