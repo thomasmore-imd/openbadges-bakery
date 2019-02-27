@@ -1,4 +1,6 @@
 const Validator = require('jsonschema').Validator;
+const axios = require('axios');
+const moment = require('moment');
 
 function extractVersion(assertion) {
     // extract the version of assertion
@@ -24,7 +26,80 @@ function isSigned(assertion) {
     return assertion.verify.type === 'signed' || 'SignedBadge' ? true : false;
 }
 
-function validate(assertion) {
+function isAssertionUrlAvailable(assertion) {
+    return axios.get(assertion.id)
+        .then(function (response) {
+            // handle success
+            if (response.status == 200) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch(function (error) {
+            // handle error
+            return false;
+        });
+}
+
+function isExpired(assertion) {
+
+    if (assertion.hasOwnProperty("expires")) {
+
+        let now = moment();
+
+        if (!moment(assertion.expires, moment.ISO_8601).isValid() || moment(assertion.expires).isBefore(now)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function getHostedAssertion(assertion) {
+    // get the assertion from the online URL in order to verify its contents
+    return axios.get(assertion.id)
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            // handle error
+            return false;
+        });
+}
+
+async function isValid(assertion) {
+    // first, validate the structure of the assertion JSON
+    let isStructureValid = hasValidStructure(assertion);
+    if (isStructureValid !== true) {
+        return "The structure of this badge is badly formatted.";
+    }
+
+    if (isHosted(assertion)) {
+        // first, we check if the validatin URL is available at all 
+        let isAvailable = await isAssertionUrlAvailable(assertion);
+        if (!isAvailable) {
+            return "This is a hosted badge but the verification URL could not be reached.";
+        }
+
+        // again, revalidate structure, this time by using the online badge assertion json
+        let hostedBadgeAssertion = await getHostedAssertion(assertion);
+        let isStructureValid = hasValidStructure(hostedBadgeAssertion);
+        if (isStructureValid !== true) {
+            return "The structure of this badge is badly formatted.";
+        }
+
+        // if the badge contains an expiry date, validate it
+        if (isExpired(hostedBadgeAssertion)) {
+            return "This badge seems to be expired.";
+        }
+
+    }
+
+    // if all checks pass, return true because the badge isValid
+    return true;
+}
+
+function hasValidStructure(assertion) {
     let version = extractVersion(assertion);
 
     //console.log(assertion);
@@ -93,16 +168,23 @@ function validate(assertion) {
 
 
     let options = {
-        throwError: true
+        throwError: false
     }
 
     v.addSchema(recipientSchema, '/recipient');
     v.addSchema(verifySchema, '/verify');
     let result = v.validate(assertion, schema, options);
-    return result;
+
+    if (result.errors.length === 0) {
+        return true;
+    } else {
+        return result;
+    }
+
 }
 
-module.exports.validate = validate;
+module.exports.isValid = isValid;
 module.exports.extractVersion = extractVersion;
 module.exports.isHosted = isHosted;
 module.exports.isSigned = isSigned;
+module.exports.hasValidStructure = hasValidStructure;

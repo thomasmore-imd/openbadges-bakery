@@ -30,9 +30,9 @@ test('version extraction is being tested', t => {
     t.is(version, "2.0");
 });
 
-test('validation of badge assertions is being tested', t => {
-    let result = model_assertion.validate(validBadge);
-    t.is(result.errors.length, 0);
+test('validation of badge assertion structure is being tested', t => {
+    let result = model_assertion.hasValidStructure(validBadge);
+    t.is(result, true);
 });
 
 test('validation type `hosted` is being tested', t => {

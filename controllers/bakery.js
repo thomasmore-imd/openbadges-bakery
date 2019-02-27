@@ -22,24 +22,25 @@ router.unbake = function (req, res, next) {
     if (openbadge) {
 
       let assertion = JSON.parse(openbadge);
-      // let's try to validate the badge 
-      try {
-        modelAssertion.validate(assertion);
-      } catch (err) {
-        let friendlyErrorMessage = err.message;
-
-        res.status(500).send({
-          error: friendlyErrorMessage
+      // let's try to validate the badge  
+      modelAssertion.isValid(assertion).then(result => {
+        if (result !== true) {
+          return res.status(500).send({
+            error: result
+          });
+        }
+        res.json({
+          status: "success",
+          assertion: openbadge
         });
 
+      }).catch(err => {
+        res.status(500).send({
+          error: "We could not unbake this badge."
+        });
         return false;
-      }
-
-
-      res.json({
-        status: "success",
-        assertion: openbadge
       });
+
 
     } else {
       res.status(500).send({
@@ -57,13 +58,13 @@ router.bake = async function (req, res, next) {
   // get badge JSON
   let badgeAssertion = req.body.badge;
 
-  try {
-    modelAssertion.validate(badgeAssertion);
-  } catch (err) {
-    let friendlyErrorMessage = err.message;
+  let structureIsValid = modelAssertion.hasValidStructure(badgeAssertion);
+  if (structureIsValid === true) {
 
+  } else {
+    let message = structureIsValid.errors[0].stack;
     res.status(500).send({
-      error: friendlyErrorMessage
+      error: message
     });
 
     return false;
